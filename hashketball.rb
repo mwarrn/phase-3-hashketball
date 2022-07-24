@@ -1,3 +1,5 @@
+require 'pry'
+
 # Write your code below game_hash
 def game_hash
   {
@@ -126,4 +128,69 @@ def game_hash
   }
 end
 
-# Write code here
+def find_player(name)
+  return_player = {}
+  game_hash.each do |team|
+    team[1][:players].each do |player|
+      if player[:player_name] == name
+        return_player = player
+      end
+    end
+  end
+  return_player
+end
+
+# Build a method, num_points_scored that takes in an argument of a player's name and returns the number of points
+# scored for that player.
+def num_points_scored(name)
+  find_player(name)[:points]
+end
+
+
+# Build a method, shoe_size, that takes in an argument of a player's name and returns the shoe size for that player.
+def shoe_size(name)
+  find_player(name)[:shoe]
+end
+
+# Build a method, team_colors, that takes in an argument of the team name and returns an Array of that team's colors.
+def team_colors(team_name)
+  team = game_hash.find do |team|
+    team[1][:team_name] == team_name 
+  end
+  team[1][:colors]
+end
+
+# Build a method, team_names, that operates on the game Hash to return an Array of the team names.
+def team_names
+  game_hash.map do |team|
+    team[1][:team_name]
+  end
+end
+
+# Build a method, player_numbers, that takes in an argument of a team name and returns an Array of the jersey
+# numbers for that team.
+def player_numbers(team_name)
+  find_team(team_name)[:players].collect{ |player| player[:number] }
+end
+
+def find_team(team_name)
+  team = game_hash.find do |team|
+    team[1][:team_name] == team_name
+  end
+  team[1]
+end
+
+# Build a method, player_stats, that takes in an argument of a player's name and returns a hash of that player's stats.
+def player_stats(name)
+  find_player(name)
+end
+
+def all_players
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+# Build a method, big_shoe_rebounds, that will return the number of rebounds associated with the player that has the
+# largest shoe size. 
+def big_shoe_rebounds
+  all_players.max{|a,b| a[:shoe] <=> b[:shoe] }[:rebounds]
+end
